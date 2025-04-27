@@ -61,6 +61,6 @@ extern void pcie_hw_msix_w32(struct pcie_state_s *state,  struct pcie_func_s *fu
 extern uint32_t pcie_hw_msix_r32(struct pcie_state_s *state, struct pcie_func_s *func, unsigned int offset);
 
 
-extern void pcie_hw_msix_irq(struct pcie_state_s *state, struct pcie_func_s *func, unsigned int vecnum);
+extern bool pcie_hw_msix_irq(struct pcie_state_s *state, struct pcie_func_s *func, unsigned int vecnum);
 
 #endif

@@ -135,7 +135,11 @@ void PCIeController::irq_thread(unsigned int i)
 		}
 		m_dma_ongoing = true;
 
-		pcie_hw_msix_irq(m_pcie_state, func, i);
+		bool flag = pcie_hw_msix_irq(m_pcie_state, func, i);
+		if (flag) {
+			m_dma_ongoing = false;
+			m_dma_done_event.notify();
+		}
 
 		//
 		// Wait for the transaction to finish

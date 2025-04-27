@@ -149,14 +149,16 @@ uint32_t pcie_hw_msix_r32(pcie_state_t *state, pcie_func_t *func, unsigned int o
 }
 
 
-void pcie_hw_msix_irq(pcie_state_t *state, pcie_func_t *func, unsigned int vecnum)
+bool pcie_hw_msix_irq(pcie_state_t *state, pcie_func_t *func, unsigned int vecnum)
 {
   //fs_log("***MSI-X: Raise IRQ %d for %d:%d\n", vecnum,  func->pf_num, func->vf_num);
   if (func->msix.masked || func->msix.vectors[vecnum].vmask) {
     set_pba_val(func, vecnum, 1);
+    return true;
   } else {
     emit_msix(state, func, vecnum);
   }
+  return false;
 }
 
 void pcie_msix_set_func_mask(pcie_state_t *pcistate, pcie_func_t *func, bool state)
