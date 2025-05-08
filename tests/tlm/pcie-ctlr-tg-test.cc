@@ -273,6 +273,9 @@ TrafficDesc transfers(merge({
 	// Trigger MSI-X
 	Write(0x0000f000, DATA(0x00, 0x00, 0x00, 0x00)),
 
+	// Test I/O
+	//Write(0x00008000, DATA(0x11, 0x12, 0x13, 0x14)),
+
 }));
 
 TrafficDesc dma_transfers(merge({
