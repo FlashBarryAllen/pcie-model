@@ -29,6 +29,10 @@
 #include <stdio.h>
 #include <signal.h>
 #include <unistd.h>
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
 
 #include "systemc.h"
 #include "tlm_utils/simple_initiator_socket.h"
@@ -49,7 +53,7 @@ using namespace sc_dt;
 using namespace std;
 using namespace utils;
 
-#define RAM_SIZE (8 * 1024)
+#define RAM_SIZE (1000000 * 1024)
 
 #define NR_MASTERS	1
 #define NR_DEVICES	5
@@ -312,6 +316,9 @@ TrafficDesc dma_transfers(merge({
 		Expect(DATA(0x31, 0x32, 0x33, 0x34), 4),
 	Read(0xc, 4),
 		Expect(DATA(0x41, 0x42, 0x43, 0x44), 4),
+	
+	Read(0x1000, 4),
+		Expect(DATA(0x0, 0x0, 0x0, 0x0), 4),
 
 }));
 
@@ -355,8 +362,8 @@ PhysFuncConfig getPhysFuncConfig()
 SC_MODULE(Top)
 {
 public:
-        TLMTrafficGenerator tg;
-        TLMTrafficGenerator tg_dma;
+    TLMTrafficGenerator tg;
+    TLMTrafficGenerator tg_dma;
 	iconnect<NR_MASTERS, NR_DEVICES> *bus;
 
 	PCIeController pcie_ctrlr;
@@ -493,14 +500,63 @@ void usage(void)
 	cout << "tlm socket-path sync-quantum-ns + <cdx main args>" << endl;
 }
 
+struct MemoryInfo {
+    long long rss_kb;
+    long long vms_kb;
+};
+
+MemoryInfo get_memory_usage_by_pid(int pid) {
+    MemoryInfo mem_info = {0, 0};
+    std::string status_file_path = "/proc/" + std::to_string(pid) + "/status";
+    std::ifstream status_file(status_file_path);
+    std::string line;
+    const std::string vm_rss_label = "VmRSS:";
+    const std::string vm_size_label = "VmSize:";
+
+    if (!status_file.is_open()) {
+        std::cerr << "Error opening status file for PID " << pid << std::endl;
+        return mem_info;
+    }
+
+    while (std::getline(status_file, line)) {
+        if (line.compare(0, vm_rss_label.length(), vm_rss_label) == 0) {
+            std::istringstream iss(line.substr(vm_rss_label.length()));
+            iss >> mem_info.rss_kb;
+        } else if (line.compare(0, vm_size_label.length(), vm_size_label) == 0) {
+            std::istringstream iss(line.substr(vm_size_label.length()));
+            iss >> mem_info.vms_kb;
+        }
+    }
+    status_file.close();
+    return mem_info;
+}
+
+int get_memory_usage() {
+    int target_pid = getpid();
+
+    MemoryInfo memory_usage = get_memory_usage_by_pid(target_pid);
+
+    if (memory_usage.rss_kb > 0 || memory_usage.vms_kb > 0) {
+        std::cout << "Memory usage for PID " << target_pid << ":" << std::endl;
+        std::cout << "  Resident Set Size (RSS): " << memory_usage.rss_kb / 1024.0 << " MB" << std::endl;
+        std::cout << "  Virtual Memory Size (VMS): " << memory_usage.vms_kb / 1024.0 << " MB" << std::endl;
+    }
+
+    return 0;
+}
+
 int sc_main(int argc, char* argv[])
 {
 	Top *top = new Top("top");
 
+	std::cout << "after init memory usage: " << get_memory_usage() << std::endl;
+
 	cout << "Run: " << top->name() << endl;
 
-        sc_start(10000, SC_MS);
+    sc_start(10000, SC_MS);
 	sc_stop();
+
+	std::cout << "after run memory usage: " << get_memory_usage() << std::endl;
 
 	return 0;
 }
