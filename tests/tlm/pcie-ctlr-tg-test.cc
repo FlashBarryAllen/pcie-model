@@ -115,7 +115,7 @@ public:
 	}
 };
 
-TrafficDesc transfers(merge({
+TrafficDesc transfers(merge({	
 	Read(0x0, 4),
 		Expect(DATA(0xEE, 0x10, 0x80, 0x0), 4),
 	Read(0x4, 4),
@@ -128,11 +128,11 @@ TrafficDesc transfers(merge({
 	//
 	Write(0x10, DATA(0xFF, 0xFF, 0xFF, 0xFF)),
 	Read(0x10, 4),
-		Expect(DATA(0x4, 0x0, 0x80, 0xFF), 4),
+		Expect(DATA(0x1, 0xf0, 0xff, 0xFF), 4),
 
 	Write(0x14, DATA(0xFF, 0xFF, 0xFF, 0xFF)),
 	Read(0x14, 4),
-		Expect(DATA(0xFF, 0xFF, 0xFF, 0xFF), 4),
+		Expect(DATA(0x0, 0x0, 0x0, 0x0), 4),
 
 	Write(0x18, DATA(0xFF, 0xFF, 0xFF, 0xFF)),
 	Read(0x18, 4),
@@ -158,13 +158,13 @@ TrafficDesc transfers(merge({
 		Expect(DATA(0x0, 0x0, 0x0, 0x0), 4),
 
 	//
-	// Configure BAR 0 position at 0xfc000000 : 0xfc7fffff
+	// Configure BAR 0 position at 0x00008000 : 0x00008fff
 	// Configure BAR 2 position at 0xfe000000_00000000 : 0xfe000000_0003ffff
 	// Configure BAR 4 position at 0xfe040000 : 0xfe07ffff
 	//
 	// (Skip init of BAR1 && BAR3)
 	//
-	Write(0x10, DATA(0x00, 0x00, 0x00, 0xfc)),
+	Write(0x10, DATA(0x00, 0x80, 0x00, 0x00)),
 	Write(0x14, DATA(0x00, 0x00, 0x00, 0x00)),
 
 	Write(0x18, DATA(0x00, 0x00, 0x00, 0x00)),
@@ -178,25 +178,25 @@ TrafficDesc transfers(merge({
 	Read(0x20, 4),
 
 	//
-	// Enable Memory Space
+	// Enable Memory Space & IO space
 	//
-        Write(0x4, DATA(0x2), 2),
+        Write(0x4, DATA(0x3), 2),
 
 	//
-	// Test BAR0 at 0xfc000000
+	// Test BAR0 at 0x00008000
 	//
-	Read(0xfc000000, 4),
-	Read(0xfc000004, 4),
-	Read(0xfc000008, 4),
-	Read(0xfc00000c, 4),
-	Write(0xfc000000, DATA(0x11, 0x12, 0x13, 0x14)),
-	Write(0xfc000004, DATA(0x21, 0x22, 0x23, 0x24)),
-	Write(0xfc000008, DATA(0x31, 0x32, 0x33, 0x34)),
-	Write(0xfc00000c, DATA(0x41, 0x42, 0x43, 0x44)),
-	Read(0xfc000000, 4),
-	Read(0xfc000004, 4),
-	Read(0xfc000008, 4),
-	Read(0xfc00000c, 4),
+	Read(0x00008000, 4),
+	Read(0x00008004, 4),
+	Read(0x00008008, 4),
+	Read(0x0000800c, 4),
+	Write(0x00008000, DATA(0x11, 0x12, 0x13, 0x14)),
+	Write(0x00008004, DATA(0x21, 0x22, 0x23, 0x24)),
+	Write(0x00008008, DATA(0x31, 0x32, 0x33, 0x34)),
+	Write(0x0000800c, DATA(0x41, 0x42, 0x43, 0x44)),
+	Read(0x00008000, 4),
+	Read(0x00008004, 4),
+	Read(0x00008008, 4),
+	Read(0x0000800c, 4),
 
 	//
 	// Test BAR2 at 0xfe000000_00000000
@@ -277,9 +277,6 @@ TrafficDesc transfers(merge({
 	// Trigger MSI-X
 	Write(0x0000f000, DATA(0x00, 0x00, 0x00, 0x00)),
 
-	// Test I/O
-	//Write(0x00008000, DATA(0x11, 0x12, 0x13, 0x14)),
-
 	// Test msg
 	//Write(0x0000c000, DATA(0x11, 0x12, 0x13, 0x14)),
 
@@ -329,6 +326,7 @@ PhysFuncConfig getPhysFuncConfig()
 	PCIExpressCapability pcieCap;
 	MSIXCapability msixCap;
 	uint32_t bar_flags = PCI_BASE_ADDRESS_MEM_TYPE_64;
+	uint32_t io_bar_flags = PCI_BASE_ADDRESS_SPACE_IO;
 	uint32_t msixTableSz = NUM_MSIX;
 	uint32_t tableOffset = 0x100 | 4; // Table offset: 0, BIR: 4
 	uint32_t pba = 0x140000 | 4; // BIR: 4
@@ -340,7 +338,7 @@ PhysFuncConfig getPhysFuncConfig()
 	cfg.SetPCIClassDevice(0);
 	cfg.SetPCIClassBase(PCI_CLASS_BASE_NETWORK_CONTROLLER);
 
-	cfg.SetPCIBAR0(8 * MiB,  bar_flags);
+	cfg.SetPCIBAR0(4 * KiB,   io_bar_flags);
 	cfg.SetPCIBAR2(256 * KiB, bar_flags);
 	cfg.SetPCIBAR4(256 * KiB, bar_flags);
 
