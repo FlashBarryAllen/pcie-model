@@ -7,7 +7,7 @@
         "program": "${workspaceFolder}/tests/tlm/pcie-ctlr-tg-test",
         "args": [],
         "stopAtEntry": false,
-        "cwd": "${workspaceFolder}",
+        "cwd": "${workspaceFolder}/tests/testcase",
         "environment": [],
         "externalConsole": false,
         "MIMode": "gdb",

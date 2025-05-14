@@ -429,7 +429,10 @@ public:
 		//
 		// Setup traffic generator
 		//
-		tg.addTransfers(transfers);
+		//tg.addTransfers(transfers);
+		DataTransferVec data_transfers = tg.get_config("rp2ep.xml");
+		static TrafficDesc m_transfers(merge(data_transfers));
+		tg.addTransfers(m_transfers);
 		tg.enableDebug();
 
 		//
@@ -477,7 +480,10 @@ public:
 		//
 		// Setup DMA to host memory traffic generator
 		//
-		tg_dma.addTransfers(dma_transfers);
+		//tg_dma.addTransfers(dma_transfers);
+		DataTransferVec dma_transfers = tg.get_config("dma.xml");
+		static TrafficDesc m_dma_transfers(merge(dma_transfers));
+		//tg_dma.addTransfers(m_dma_transfers);
 		tg_dma.enableDebug();
 		tg_dma.setStartDelay(sc_time(1000, SC_NS));
 
