@@ -136,7 +136,7 @@ TrafficDesc transfers(merge({
 
 	Write(0x18, DATA(0xFF, 0xFF, 0xFF, 0xFF)),
 	Read(0x18, 4),
-		Expect(DATA(0x4, 0x0, 0xFC, 0xFF), 4),
+		Expect(DATA(0xc, 0x0, 0xFC, 0xFF), 4),
 
 	Write(0x1c, DATA(0xFF, 0xFF, 0xFF, 0xFF)),
 	Read(0x1c, 4),
@@ -144,7 +144,7 @@ TrafficDesc transfers(merge({
 
 	Write(0x20, DATA(0xFF, 0xFF, 0xFF, 0xFF)),
 	Read(0x20, 4),
-		Expect(DATA(0x4, 0x0, 0xFC, 0xFF), 4),
+		Expect(DATA(0xc, 0x0, 0xFC, 0xFF), 4),
 
 	Write(0x24, DATA(0xFF, 0xFF, 0xFF, 0xFF)),
 	Read(0x24, 4),
@@ -325,7 +325,7 @@ PhysFuncConfig getPhysFuncConfig()
 	PMCapability pmCap;
 	PCIExpressCapability pcieCap;
 	MSIXCapability msixCap;
-	uint32_t bar_flags = PCI_BASE_ADDRESS_MEM_TYPE_64;
+	uint32_t bar_flags = PCI_BASE_ADDRESS_MEM_TYPE_64 | PCI_BASE_ADDRESS_MEM_PREFETCH;
 	uint32_t io_bar_flags = PCI_BASE_ADDRESS_SPACE_IO;
 	uint32_t msixTableSz = NUM_MSIX;
 	uint32_t tableOffset = 0x100 | 4; // Table offset: 0, BIR: 4
@@ -399,7 +399,7 @@ public:
 
 	Top(sc_module_name name) :
 		sc_module(name),
-        	tg("tg"),
+        tg("tg"),
 		tg_dma("tg-dma"),
 
 		pcie_ctrlr("pcie-ctrlr", getPhysFuncConfig()),
