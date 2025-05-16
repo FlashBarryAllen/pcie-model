@@ -33,6 +33,7 @@ OBJS_COMMON += test-modules/memory.o
 
 OBJS_COMMON += tlm-modules/pcie-controller.o
 OBJS_COMMON += tlm-modules/libpcie-callbacks.o
+OBJS_COMMON += tlm-modules/pcie-cfg.o
 
 PCIE_CTRL_TG_TEST_SRC += pcie-ctlr-tg-test.cc
 PCIE_CTRL_TG_TEST_OBJS = $(PCIE_CTRL_TG_TEST_SRC:.cc=.o)

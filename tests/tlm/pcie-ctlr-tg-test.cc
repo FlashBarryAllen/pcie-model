@@ -47,6 +47,7 @@
 #include "test-modules/utils.h"
 
 #include "tlm-modules/pcie-controller.h"
+#include "tlm-modules/pcie-cfg.h"
 
 using namespace sc_core;
 using namespace sc_dt;
@@ -321,7 +322,7 @@ TrafficDesc dma_transfers(merge({
 
 PhysFuncConfig getPhysFuncConfig()
 {
-	//getpfcfgfromxml("pf.xml");
+	PCIeType0Header hdr = getpfcfgfromxml("pf.xml");
 	PhysFuncConfig cfg;
 	PMCapability pmCap;
 	PCIExpressCapability pcieCap;
@@ -332,7 +333,7 @@ PhysFuncConfig getPhysFuncConfig()
 	uint32_t tableOffset = 0x100 | 4; // Table offset: 0, BIR: 4
 	uint32_t pba = 0x140000 | 4; // BIR: 4
 
-	cfg.SetPCIVendorID(PCI_VENDOR_ID_XILINX);
+	cfg.SetPCIVendorID(hdr.vendorID);
 	cfg.SetPCIDeviceID(PCI_DEVICE_ID_XILINX_EF100);
 
 	cfg.SetPCIClassProgIF(0);

@@ -298,32 +298,6 @@ private:
 	bool m_msixCopied;
 };
 
-struct PCIeType0Header {
-    uint16_t vendorID;          // 00-01
-    uint16_t deviceID;          // 02-03
-    uint16_t command;           // 04-05
-    uint16_t status;            // 06-07
-    uint8_t revisionID;         // 08
-    uint8_t classCode[3];       // 09-0B (Base Class, Sub-Class, Prog IF)
-    uint8_t cacheLineSize;      // 0C
-    uint8_t latencyTimer;       // 0D
-    uint8_t headerType;         // 0E (Bit 7: Multi-Function)
-    uint8_t bist;               // 0F (Bit 7-4: BIST, Bit 3-0: Reserved)
-    uint32_t baseAddressRegisters[6]; // 10-27 (BAR0-BAR5)
-    uint32_t cardbusCISPointer;  // 28-2B (Legacy, optional)
-    uint16_t subsystemVendorID; // 2C-2D (Optional)
-    uint16_t subsystemID;       // 2E-2F (Optional)
-    uint32_t expansionROMBaseAddress; // 30-33 (Optional, Bit 0: Enable)
-    uint8_t capabilitiesPointer; // 34 (Optional, 0x00 if no capabilities)
-    uint8_t reserved0[3];       // 35-37
-    uint32_t interruptLinePin;   // 38-3B (Byte 3: Interrupt Line, Byte 0: Interrupt Pin)
-    uint8_t minGrant;           // 3C
-    uint8_t maxLatency;         // 3D
-    uint8_t reserved1[2];       // 3E-3F
-};
-
-void getpfcfgfromxml(const char* xml_file);
-
 #undef GEN_PCI_CFGSPC_BAR_HELPER_FUNC
 #undef GEN_PCI_CFGSPC_FIELD_FUNCS
 

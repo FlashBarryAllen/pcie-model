@@ -143,7 +143,7 @@ void pcie_tlp_init(pcie_state_t *state)
   
   var = getenv("PCIE_TLP_DEBUG");
 
-  new_verb = OVM_FULL;
+  new_verb = OVM_NONE;
 
   if (var != NULL) {
     for (i = 0; i < n; i++)
