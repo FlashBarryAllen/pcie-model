@@ -321,6 +321,7 @@ TrafficDesc dma_transfers(merge({
 
 PhysFuncConfig getPhysFuncConfig()
 {
+	//getpfcfgfromxml("pf.xml");
 	PhysFuncConfig cfg;
 	PMCapability pmCap;
 	PCIExpressCapability pcieCap;
