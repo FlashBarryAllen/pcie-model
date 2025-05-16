@@ -8,7 +8,8 @@
 
     <cmd name="READ" addr="0x8" length="4"/>
     <cmd name="EXPECT" data="{0x0, 0x0, 0x0, 0x2}" length="4"/>
-
+    
+    <!-- Test checking BAR sizes -->
     <cmd name="WRITE" addr="0x10" data="{0xFF, 0xFF, 0xFF, 0xFF}"/>
     <cmd name="READ" addr="0x10" length="4"/>
     <cmd name="EXPECT" data="{0x1, 0xF0, 0xFF, 0xFF}" length="4"/>
@@ -33,10 +34,14 @@
     <cmd name="READ" addr="0x24" length="4"/>
     <cmd name="EXPECT" data="{0xFF, 0xFF, 0xFF, 0xFF}"  length="4"/>
 
+    <!-- Test checking Expansion ROM BAR size -->
     <cmd name="WRITE" addr="0x30" data="{0xFF, 0xFF, 0xFF, 0xFF}"/>
     <cmd name="READ" addr="0x30" length="4"/>
     <cmd name="EXPECT" data="{0x0, 0x0, 0x0, 0x0}"  length="4"/>
 
+    <!-- Configure BAR 0 position at 0x00008000 : 0x00008fff
+	     Configure BAR 2 position at 0xfe000000_00000000 : 0xfe000000_0003ffff
+	     Configure BAR 4 position at 0xfe040000 : 0xfe07ffff -->
     <cmd name="WRITE" addr="0x10" data="{0x00, 0x80, 0x00, 0x00}"/>
     <cmd name="WRITE" addr="0x14" data="{0x00, 0x00, 0x00, 0x00}"/>
 
@@ -50,8 +55,10 @@
     <cmd name="READ" addr="0x18" length="4"/>
     <cmd name="READ" addr="0x20" length="4"/>
 
+    <!-- Enable Memory Space & IO space -->
     <cmd name="WRITE" addr="0x4" length="2" data="{0x3, 0x0}"/>
 
+    <!-- Test BAR0 at 0x00008000 -->
     <cmd name="READ" addr="0x00008000" length="4"/>
     <cmd name="READ" addr="0x00008004" length="4"/>
     <cmd name="READ" addr="0x00008008" length="4"/>
@@ -65,6 +72,7 @@
     <cmd name="READ" addr="0x00008008" length="4"/>
     <cmd name="READ" addr="0x0000800C" length="4"/>
 
+    <!-- Test BAR2 at 0xfe000000_00000000 -->
     <cmd name="READ" addr="0xFE00000000000000" length="4"/>
     <cmd name="READ" addr="0xFE00000000000004" length="4"/>
     <cmd name="READ" addr="0xFE00000000000008" length="4"/>
@@ -78,51 +86,62 @@
     <cmd name="READ" addr="0xFE00000000000008" length="4"/>
     <cmd name="READ" addr="0xFE0000000000000C" length="4"/>
 
+    <!-- Configure MSI-X -->
     <cmd name="READ" addr="0xB0" length="4"/>
     <cmd name="EXPECT" data="{0x11, 0x00, 0x07, 0x00}"  length="4"/>
     <cmd name="WRITE" addr="0xB0" data="{0x00, 0x80, 0x00, 0x80}"/>
     <cmd name="BYTEENABLE" data="{0x00, 0x00, 0xFF, 0xFF}" length="4"/>
     <cmd name="READ" addr="0xB0" length="4" />
     <cmd name="EXPECT" data="{0x11, 0x00, 0x07, 0x80}"  length="4"/>
+
+    <!-- MSI-X Table entry 0 -->
     <cmd name="WRITE" addr="0xFE040100" data="{0x00, 0x00, 0x00, 0x00}"/>
     <cmd name="WRITE" addr="0xFE040104" data="{0x00, 0x00, 0x00, 0x00}"/>
     <cmd name="WRITE" addr="0xFE040108" data="{0x00, 0xBB, 0xCC, 0xDD}"/>
     <cmd name="WRITE" addr="0xFE04010C" data="{0x00, 0x00, 0x00, 0x00}"/>
 
+    <!-- MSI-X Table entry 1 -->
     <cmd name="WRITE" addr="0xFE040110" data="{0x04, 0x00, 0x00, 0x00}"/>
     <cmd name="WRITE" addr="0xFE040114" data="{0x00, 0x00, 0x00, 0x00}"/>
     <cmd name="WRITE" addr="0xFE040118" data="{0x11, 0xBB, 0xCC, 0xDD}"/>
     <cmd name="WRITE" addr="0xFE04011C" data="{0x00, 0x00, 0x00, 0x00}"/>
 
+    <!-- MSI-X Table entry 2 -->
     <cmd name="WRITE" addr="0xFE040120" data="{0x08, 0x00, 0x00, 0x00}"/>
     <cmd name="WRITE" addr="0xFE040124" data="{0x00, 0x00, 0x00, 0x00}"/>
     <cmd name="WRITE" addr="0xFE040128" data="{0x22, 0xBB, 0xCC, 0xDD}"/>
     <cmd name="WRITE" addr="0xFE04012C" data="{0x00, 0x00, 0x00, 0x00}"/>
 
+    <!-- MSI-X Table entry 3 -->
     <cmd name="WRITE" addr="0xFE040130" data="{0x0C, 0x00, 0x00, 0x00}"/>
     <cmd name="WRITE" addr="0xFE040134" data="{0x00, 0x00, 0x00, 0x00}"/>
     <cmd name="WRITE" addr="0xFE040138" data="{0x33, 0xBB, 0xCC, 0xDD}"/>
     <cmd name="WRITE" addr="0xFE04013C" data="{0x00, 0x00, 0x00, 0x00}"/>
 
+    <!-- MSI-X Table entry 4 -->
     <cmd name="WRITE" addr="0xFE040140" data="{0x10, 0x00, 0x00, 0x00}"/>
     <cmd name="WRITE" addr="0xFE040144" data="{0x00, 0x00, 0x00, 0x00}"/>
     <cmd name="WRITE" addr="0xFE040148" data="{0x44, 0xBB, 0xCC, 0xDD}"/>
     <cmd name="WRITE" addr="0xFE04014C" data="{0x00, 0x00, 0x00, 0x00}"/>
 
+    <!-- MSI-X Table entry 5 -->
     <cmd name="WRITE" addr="0xFE040150" data="{0x14, 0x00, 0x00, 0x00}"/>
     <cmd name="WRITE" addr="0xFE040154" data="{0x00, 0x00, 0x00, 0x00}"/>
     <cmd name="WRITE" addr="0xFE040158" data="{0x55, 0xBB, 0xCC, 0xDD}"/>
     <cmd name="WRITE" addr="0xFE04015C" data="{0x00, 0x00, 0x00, 0x00}"/>
 
+    <!-- MSI-X Table entry 6 -->
     <cmd name="WRITE" addr="0xFE040160" data="{0x18, 0x00, 0x00, 0x00}"/>
     <cmd name="WRITE" addr="0xFE040164" data="{0x00, 0x00, 0x00, 0x00}"/>
     <cmd name="WRITE" addr="0xFE040168" data="{0x66, 0xBB, 0xCC, 0xDD}"/>
     <cmd name="WRITE" addr="0xFE04016C" data="{0x00, 0x00, 0x00, 0x00}"/>
 
+    <!-- MSI-X Table entry 7 -->
     <cmd name="WRITE" addr="0xFE040170" data="{0x1C, 0x00, 0x00, 0x00}"/>
     <cmd name="WRITE" addr="0xFE040174" data="{0x00, 0x00, 0x00, 0x00}"/>
     <cmd name="WRITE" addr="0xFE040178" data="{0x77, 0xBB, 0xCC, 0xDD}"/>
     <cmd name="WRITE" addr="0xFE04017C" data="{0x00, 0x00, 0x00, 0x00}"/>
 
+    <!-- Trigger MSI-X -->
     <cmd name="WRITE" addr="0x0000F000" data="{0x00, 0x00, 0x00, 0x00}"/>
 </gen>
