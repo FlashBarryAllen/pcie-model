@@ -56,11 +56,11 @@
     <cmd name="READ" addr="0x20" length="4"/>
 
     <!-- Enable Memory Space & IO space -->
-    <cmd name="WRITE" addr="0x4" length="2" data="{0x3, 0x0}"/>
+    <cmd name="WRITE" addr="0x4" data="{0x3}"/>
 
     <!-- Test BAR0 at 0x00008000 -->
     <cmd name="READ" addr="0x00008000" length="4"/>
-    <cmd name="READ" addr="0x00008004" length="4"/>
+    <cmd name="READ" addr="0x00008fff" length="4"/>
     <cmd name="READ" addr="0x00008008" length="4"/>
     <cmd name="READ" addr="0x0000800C" length="4"/>
     <cmd name="WRITE" addr="0x00008000" data="{0x11, 0x12, 0x13, 0x14}"/>
