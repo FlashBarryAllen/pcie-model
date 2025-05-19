@@ -2095,7 +2095,10 @@ static void _fs_pci_cfg_write(mc_t *mc, pcie_state_t *state, unsigned int pf,
     FS_PCI_DEBUG("@@ PCI CFG WRITE: PF%u addr 0x%03x%s = 0x%0*x %s\n", pf,
                  addr, cs2 ? "[CS2]" : "", bits / 4, val,
                  pci_cfg_reg_name(addr, false, true));
-
+  
+  if (addr == PCI_COMMAND) {
+    bits = 16;
+  }
   switch (bits) {
   case 8:
     handle_cfg_write_8(state, resource, addr, val, access_type);
