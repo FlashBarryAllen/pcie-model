@@ -502,9 +502,9 @@ bool PCIeController::IsCplD(tlm::tlm_generic_payload *gp)
 }
 
 void PCIeController::handle_MemWr(unsigned int bar_num, uint64_t addr,
-				  uint8_t *data, unsigned int len)
+				  uint8_t *data, unsigned int len, pcie_tlp_info_t *tlp_info)
 {
-	WrTxn *txn = new WrTxn(bar_num, addr, data, len);
+	WrTxn *txn = new WrTxn(bar_num, addr, data, len, tlp_info);
 	m_wrList.push_back(txn);
 	m_wr_event.notify();
 }

@@ -56,20 +56,20 @@
     <cmd name="READ" addr="0x20" length="4"/>
 
     <!-- Enable Memory Space & IO space -->
-    <cmd name="WRITE" addr="0x4" data="{0x3}"/>
+    <cmd name="WRITE" addr="0x4" data="{0x3, 0x0}"/>
 
     <!-- Test BAR0 at 0x00008000 -->
-    <cmd name="READ" addr="0x00008000" length="4"/>
-    <cmd name="READ" addr="0x00008fff" length="4"/>
-    <cmd name="READ" addr="0x00008008" length="4"/>
+    <cmd name="READ" addr="0x00008001" length="1"/>
+    <cmd name="READ" addr="0x00008004" length="4"/>
+    <cmd name="READ" addr="0x00008001" length="1"/>
     <cmd name="READ" addr="0x0000800C" length="4"/>
-    <cmd name="WRITE" addr="0x00008000" data="{0x11, 0x12, 0x13, 0x14}"/>
+    <cmd name="WRITE" addr="0x00008001" data="{0x81}"/>
     <cmd name="WRITE" addr="0x00008004" data="{0x21, 0x22, 0x23, 0x24}"/>
     <cmd name="WRITE" addr="0x00008008" data="{0x31, 0x32, 0x33, 0x34}"/>
     <cmd name="WRITE" addr="0x0000800C" data="{0x41, 0x42, 0x43, 0x44}"/>
-    <cmd name="READ" addr="0x00008000" length="4"/>
+    <cmd name="READ" addr="0x00008000" length="8"/>
     <cmd name="READ" addr="0x00008004" length="4"/>
-    <cmd name="READ" addr="0x00008008" length="4"/>
+    <cmd name="READ" addr="0x00008001" length="1"/>
     <cmd name="READ" addr="0x0000800C" length="4"/>
 
     <!-- Test BAR2 at 0xfe000000_00000000 -->
@@ -77,7 +77,8 @@
     <cmd name="READ" addr="0xFE00000000000004" length="4"/>
     <cmd name="READ" addr="0xFE00000000000008" length="4"/>
     <cmd name="READ" addr="0xFE0000000000000C" length="4"/>
-    <cmd name="WRITE" addr="0xFE00000000000000" data="{0x11, 0x12, 0x13, 0x14}"/>
+    <cmd name="WRITE" addr="0xFE00000000000001" data="{0x42, 0x43, 0x44}"/>
+    <cmd name="BYTEENABLE" data="{0x00, 0xFF, 0x00, 0xff}" length="4"/>
     <cmd name="WRITE" addr="0xFE00000000000004" data="{0x11, 0x12, 0x13, 0x14}"/>
     <cmd name="WRITE" addr="0xFE00000000000008" data="{0x21, 0x22, 0x23, 0x24}"/>
     <cmd name="WRITE" addr="0xFE0000000000000C" data="{0x31, 0x32, 0x33, 0x34}"/>
@@ -85,6 +86,8 @@
     <cmd name="READ" addr="0xFE00000000000004" length="4"/>
     <cmd name="READ" addr="0xFE00000000000008" length="4"/>
     <cmd name="READ" addr="0xFE0000000000000C" length="4"/>
+
+    <cmd name="READ" addr="0xfe040000" length="1"/>
 
     <!-- Configure MSI-X -->
     <cmd name="READ" addr="0xB0" length="4"/>

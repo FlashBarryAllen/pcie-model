@@ -86,7 +86,7 @@ extern "C" {
 		uint32_t bcnt = dwlen * 4;
 
 		pcie_ctrlr->handle_MemWr(bar_num, addr,
-				reinterpret_cast<uint8_t*>(data.buf.ptr), bcnt);
+				reinterpret_cast<uint8_t*>(data.buf.ptr), bcnt, tlp_info);
 
 		free(tlp_info);
 		free(data.buf.ptr);

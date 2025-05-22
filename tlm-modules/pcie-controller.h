@@ -101,7 +101,7 @@ public:
 			uint8_t *data, unsigned int len);
 
 	void handle_MemWr(unsigned int bar_num, uint64_t addr,
-			uint8_t *data, unsigned int len);
+			uint8_t *data, unsigned int len, pcie_tlp_info_t *tlp_info);
 
 	pcie_core_settings_t *GetPCIeCoreSettings();
 
@@ -197,7 +197,7 @@ private:
 	class WrTxn {
 	public:
 		WrTxn(unsigned int bar_num, uint64_t addr,
-			uint8_t *data, unsigned int len) :
+			uint8_t *data, unsigned int len, pcie_tlp_info_t *tlp_info) :
 			m_bar_num(bar_num)
 		{
 			m_data = new uint8_t[len];
@@ -210,17 +210,32 @@ private:
 			m_gp.set_data_ptr(m_data);
 			m_gp.set_data_length(len);
 			m_gp.set_streaming_width(len);
+
+			m_be = new uint8_t[len];
+			unsigned int dw_be = tlp_info->first_be;
+			for (unsigned int  i = 0; i < len; i++)
+			{
+				if ((dw_be >> i) & 0x1)
+					m_be[i] = TLM_BYTE_ENABLED;
+				else
+					m_be[i] = TLM_BYTE_DISABLED;
+			}
+			
+			m_gp.set_byte_enable_ptr(m_be);
+			m_gp.set_byte_enable_length(len);
 		}
 
 		~WrTxn()
 		{
 			delete m_data;
+			delete m_be;
 		}
 
 		tlm::tlm_generic_payload& GetGP() { return m_gp; }
 		unsigned int GetBarNum() { return m_bar_num; }
 	private:
 		uint8_t *m_data;
+		uint8_t *m_be;
 		tlm::tlm_generic_payload m_gp;
 		unsigned int m_bar_num;
 	};
