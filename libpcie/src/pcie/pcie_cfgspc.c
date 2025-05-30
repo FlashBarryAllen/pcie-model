@@ -2099,6 +2099,14 @@ static void _fs_pci_cfg_write(mc_t *mc, pcie_state_t *state, unsigned int pf,
   if (addr == PCI_COMMAND) {
     bits = 16;
   }
+
+  uint16_t msix_cap = state->cfgspc_state->msix_cap[resource->rid];
+  if ((msix_cap && addr == msix_cap)) {
+    val = (val & 0xffff0000) >> 16;
+    addr += PCI_MSIX_FLAGS;
+    bits = 16;
+  }
+
   switch (bits) {
   case 8:
     handle_cfg_write_8(state, resource, addr, val, access_type);

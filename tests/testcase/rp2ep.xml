@@ -92,8 +92,8 @@
     <!-- Configure MSI-X -->
     <cmd name="READ" addr="0xB0" length="4"/>
     <cmd name="EXPECT" data="{0x11, 0x00, 0x07, 0x00}"  length="4"/>
-    <cmd name="WRITE" addr="0xB0" data="{0x00, 0x80, 0x00, 0x80}"/>
-    <cmd name="BYTEENABLE" data="{0x00, 0x00, 0xFF, 0xFF}" length="4"/>
+    <cmd name="WRITE" addr="0xB0" data="{0x00, 0x11, 0x07, 0x80}"/>
+    <cmd name="BYTEENABLE" data="{0xFF, 0xFF, 0xFF, 0xFF}" length="4"/>
     <cmd name="READ" addr="0xB0" length="4" />
     <cmd name="EXPECT" data="{0x11, 0x00, 0x07, 0x80}"  length="4"/>
 
