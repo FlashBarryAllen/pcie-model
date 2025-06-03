@@ -203,21 +203,23 @@ int get_10bit_tag(uint32_t tlp0, int tag_8bit)
 
   tag_t8 = TLP_GET(0, TAG_T8);
   tag_t9 = TLP_GET(0, TAG_T9);
-  if (tag_t9 == 0 && tag_t8 == 1) {
-    /* (t9,t8) = (0, 1) means tags are from 0 to 255, so no change */
+  if (tag_t9 == 0 && tag_t8 == 0) {
+    /* (t9,t8) = (0, 0) means tags are from 0 to 255, so no change */
     tag_10bit = tag_8bit;
   }
-  else if (tag_t9 == 1 && tag_t8 == 0) {
-    /* (t9,t8) = (1, 0) means tags are from 256 to 511 */
+  else if (tag_t9 == 0 && tag_t8 == 1) {
+    /* (t9,t8) = (0, 1) means tags are from 256 to 511 */
     tag_10bit = tag_8bit + 0x100;
   }
-  else if (tag_t9 == 1 && tag_t8 == 1) {
-    /* (t9,t8) = (1, 1) means tags are from 512 to 767 */
+  else if (tag_t9 == 1 && tag_t8 == 0) {
+    /* (t9,t8) = (1, 0) means tags are from 511 to 767 */
     tag_10bit = tag_8bit + 0x200;
   }
-  else {
-    tag_10bit = tag_8bit;
+  else if (tag_t9 == 1 && tag_t8 == 1) {
+    /* (t9,t8) = (1, 1) means tags are from 768 to 1023 */
+    tag_10bit = tag_8bit + 0x300;
   }
+
   return tag_10bit;
 }
 
