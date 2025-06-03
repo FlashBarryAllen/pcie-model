@@ -216,7 +216,6 @@ int get_10bit_tag(uint32_t tlp0, int tag_8bit)
     tag_10bit = tag_8bit + 0x200;
   }
   else {
-    ERR("10 bit tag is not enabled.\n");
     tag_10bit = tag_8bit;
   }
   return tag_10bit;
@@ -225,23 +224,28 @@ int get_10bit_tag(uint32_t tlp0, int tag_8bit)
 int set_tag_bit_8_9(pcie_state_t *state, uint32_t tlp0, int tag)
 {
   if (is_10bit_tag_supported(state) == true) {
-    /* For tags 0-255 (t9, t8) = (0, 1) */
+    /* For tags 0-255 (t9, t8) = (0, 0) */
     if (tag >= 0 && tag < 0x100) {
+      TLP_SET(0, TAG_T9, 0);
+      TLP_SET(0, TAG_T8, 0);
+    }
+    /* For tags 256-511 (t9, t8) = (0, 1) */
+    else if (tag >= 0x100 && tag < 0x200) {
       TLP_SET(0, TAG_T9, 0);
       TLP_SET(0, TAG_T8, 1);
     }
-    /* For tags 256-511 (t9, t8) = (1, 0) */
-    else if (tag >= 0x100 && tag < 0x200) {
+    /* For tags 512-767 (t9, t8) = (1, 0) */
+    else if (tag >= 0x200 && tag < 0x300) {
       TLP_SET(0, TAG_T9, 1);
       TLP_SET(0, TAG_T8, 0);
     }
-    /* For tags 512-767 (t9, t8) = (1, 1) */
-    else if (tag >= 0x200 && tag < 0x300) {
+    /* For tags 768-1023 (t9, t8) = (1, 1) */
+    else if (tag >= 0x300 && tag < 0x400) {
       TLP_SET(0, TAG_T9, 1);
       TLP_SET(0, TAG_T8, 1);
     }
     else {
-      ERR("Invalid Tag number provided : %d, valid range (0, 767)\n", tag);
+      ERR("Invalid Tag number provided : %d, valid range (0, 1023)\n", tag);
     }
   }
   else {

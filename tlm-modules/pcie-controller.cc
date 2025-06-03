@@ -165,7 +165,7 @@ void PCIeController::init()
 	m_pcie_settings.max_total_funcs = 1;
 	m_pcie_settings.initial_cfg_retry = false;
 	m_pcie_settings.process_tlp_once = true;
-	m_pcie_settings.tag_type = TAG_8BIT;
+	m_pcie_settings.tag_type = TAG_10BIT;
 
 	m_pcie_settings.pf_cfgspc_fixups[0].addr = 0xffff; // CFGSPC_FIXUPS_END
 	m_pcie_settings.vf_cfgspc_fixups[0].addr = 0xffff; // CFGSPC_FIXUPS_END
