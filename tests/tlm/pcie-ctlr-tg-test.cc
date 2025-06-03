@@ -322,18 +322,25 @@ TrafficDesc dma_transfers(merge({
 
 PhysFuncConfig getPhysFuncConfig()
 {
-	PCIeType0Header hdr = getpfcfgfromxml("pf.xml");
+	PCIeFuncCfg xmlcfg = getpfcfgfromxml("pf.xml");
 	PhysFuncConfig cfg;
 	PMCapability pmCap;
 	PCIExpressCapability pcieCap;
 	MSIXCapability msixCap;
+	/*
 	uint32_t bar_flags = PCI_BASE_ADDRESS_MEM_TYPE_64 | PCI_BASE_ADDRESS_MEM_PREFETCH;
 	uint32_t io_bar_flags = PCI_BASE_ADDRESS_SPACE_IO;
 	uint32_t msixTableSz = NUM_MSIX;
 	uint32_t tableOffset = 0x100 | 4; // Table offset: 0, BIR: 4
 	uint32_t pba = 0x140000 | 4; // BIR: 4
+	*/
+	uint32_t bar_flags = xmlcfg.bars.bar_flags;
+	uint32_t io_bar_flags = PCI_BASE_ADDRESS_SPACE_IO;
+	uint32_t msixTableSz = xmlcfg.msix.table_size;
+	uint32_t tableOffset = xmlcfg.msix.table_offset;
+	uint32_t pba = xmlcfg.msix.pba;
 
-	cfg.SetPCIVendorID(hdr.vendorID);
+	cfg.SetPCIVendorID(xmlcfg.header.vendorID);
 	cfg.SetPCIDeviceID(PCI_DEVICE_ID_XILINX_EF100);
 
 	cfg.SetPCIClassProgIF(0);

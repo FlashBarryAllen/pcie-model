@@ -29,4 +29,12 @@
         min_gnt="0x00"
         max_lat="0x00"
     />
+    <bar
+        bar_flags="0xc"
+    />
+    <msix
+        table_size="0x8"
+        table_offset="0x104"
+        pba="0x140004"
+    />
 </cfg_hdr_spc>

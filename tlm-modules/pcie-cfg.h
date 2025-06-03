@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>
 
+
 struct PCIeType0Header {
     uint16_t vendorID;
     uint16_t deviceID;
@@ -37,6 +38,23 @@ struct PCIeType0Header {
     uint8_t maxLat;
 };
 
-PCIeType0Header getpfcfgfromxml(const char* xml_file);
+struct PCIeBarCfg {
+    uint32_t bar_flags;
+	uint32_t io_bar_flags;
+};
+
+struct PCIeMsixCfg {
+    uint32_t table_size;
+	uint32_t table_offset;
+	uint32_t pba;
+};
+
+struct PCIeFuncCfg {
+    struct PCIeType0Header header;
+    struct PCIeBarCfg bars;
+    struct PCIeMsixCfg msix;
+};
+
+PCIeFuncCfg getpfcfgfromxml(const char* xml_file);
 
 #endif // PCIE_CFG_H
