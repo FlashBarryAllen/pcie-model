@@ -104,6 +104,8 @@ PCIeFuncCfg getpfcfgfromxml(const char* xml_file)
     XMLElement* msixElement = barElement->NextSiblingElement("msix");
     msixElement->QueryAttribute("table_size", (int*)&cfg.msix.table_size);
     cout << "MSI-X Table Size: 0x" << hex << static_cast<int>(cfg.msix.table_size) << dec << endl;
+    msixElement->QueryAttribute("table_bir", (int*)&cfg.msix.table_bir);
+    cout << "MSI-X Table BIR: 0x" << hex << static_cast<int>(cfg.msix.table_bir) << dec << endl;
     msixElement->QueryAttribute("table_offset", (int*)&cfg.msix.table_offset);
     cout << "MSI-X Table Offset: 0x" << hex << static_cast<int>(cfg.msix.table_offset) << dec << endl;
     msixElement->QueryAttribute("pba", (int*)&cfg.msix.pba);

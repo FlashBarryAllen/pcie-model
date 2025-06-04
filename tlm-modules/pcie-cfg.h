@@ -45,6 +45,7 @@ struct PCIeBarCfg {
 
 struct PCIeMsixCfg {
     uint32_t table_size;
+    uint32_t table_bir;
 	uint32_t table_offset;
 	uint32_t pba;
 };

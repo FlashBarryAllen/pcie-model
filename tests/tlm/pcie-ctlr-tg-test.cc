@@ -337,8 +337,8 @@ PhysFuncConfig getPhysFuncConfig()
 	uint32_t bar_flags = xmlcfg.bars.bar_flags;
 	uint32_t io_bar_flags = PCI_BASE_ADDRESS_SPACE_IO;
 	uint32_t msixTableSz = xmlcfg.msix.table_size;
-	uint32_t tableOffset = xmlcfg.msix.table_offset;
-	uint32_t pba = xmlcfg.msix.pba;
+	uint32_t tableOffset = xmlcfg.msix.table_offset | xmlcfg.msix.table_bir;
+	uint32_t pba = xmlcfg.msix.pba | xmlcfg.msix.table_bir;
 
 	cfg.SetPCIVendorID(xmlcfg.header.vendorID);
 	cfg.SetPCIDeviceID(PCI_DEVICE_ID_XILINX_EF100);

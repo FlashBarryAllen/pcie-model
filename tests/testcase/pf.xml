@@ -34,7 +34,8 @@
     />
     <msix
         table_size="0x8"
-        table_offset="0x104"
-        pba="0x140004"
+        table_bir="0x4"
+        table_offset="0x100"
+        pba="0x140000"
     />
 </cfg_hdr_spc>
