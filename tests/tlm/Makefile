@@ -26,7 +26,7 @@ include libsystemctlm-soc/tests/Rules.mk
 CPPFLAGS += -I libsystemctlm-soc -I libsystemctlm-soc/tests
 CPPFLAGS += -I ../../libpcie/src -I ../../ -I .
 CPPFLAGS += -I ../tinyxml2
-CXXFLAGS += -g -DNDEBUG
+CXXFLAGS += -g
 CFLAGS += -g
 
 OBJS_COMMON += test-modules/memory.o
@@ -81,17 +81,17 @@ pcie-ctlr-rand-tg-test.o: pcie-ctlr-rand-tg-test.cc
 pcie-ctrl-bar64-rand-tg-test.o: pcie-ctlr-rand-tg-test.cc
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c -o $@ $<
 
-pcie-ctlr-tg-test: LDLIBS += libpcie.a libtinyxml2.a
-pcie-ctlr-tg-test: $(PCIE_CTRL_TG_TEST_OBJS) libpcie.a libtinyxml2.a $(OBJS_COMMON)
+pcie-ctlr-tg-test: LDLIBS += libpcie.a ../tinyxml2/libtinyxml2.a
+pcie-ctlr-tg-test: $(PCIE_CTRL_TG_TEST_OBJS) libpcie.a ../tinyxml2/libtinyxml2.a $(OBJS_COMMON)
 	$(CXX) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
-pcie-ctlr-rand-tg-test: LDLIBS += libpcie.a libtinyxml2.a
-pcie-ctlr-rand-tg-test: $(PCIE_CTRL_RAND_TG_TEST_OBJS) libpcie.a libtinyxml2.a $(OBJS_COMMON)
+pcie-ctlr-rand-tg-test: LDLIBS += libpcie.a ../tinyxml2/libtinyxml2.a
+pcie-ctlr-rand-tg-test: $(PCIE_CTRL_RAND_TG_TEST_OBJS) libpcie.a ../tinyxml2/libtinyxml2.a $(OBJS_COMMON)
 	$(CXX) $(LDFLAGS) -o $@ $^  $(LDLIBS)
 
 pcie-ctlr-bar64-rand-tg-test: CXXFLAGS += -DCONFIG_64BIT_BAR
-pcie-ctlr-bar64-rand-tg-test: LDLIBS += libpcie.a libtinyxml2.a
-pcie-ctlr-bar64-rand-tg-test: pcie-ctrl-bar64-rand-tg-test.o libpcie.a libtinyxml2.a $(OBJS_COMMON)
+pcie-ctlr-bar64-rand-tg-test: LDLIBS += libpcie.a ../tinyxml2/libtinyxml2.a
+pcie-ctlr-bar64-rand-tg-test: pcie-ctrl-bar64-rand-tg-test.o libpcie.a ../tinyxml2/libtinyxml2.a $(OBJS_COMMON)
 	$(CXX) $(LDFLAGS) -o $@ $^  $(LDLIBS)
 
 clean:
