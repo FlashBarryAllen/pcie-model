@@ -26,7 +26,7 @@ include libsystemctlm-soc/tests/Rules.mk
 CPPFLAGS += -I libsystemctlm-soc -I libsystemctlm-soc/tests
 CPPFLAGS += -I ../../libpcie/src -I ../../ -I .
 CPPFLAGS += -I ../tinyxml2
-CXXFLAGS += -g
+CXXFLAGS += -g -DNDEBUG
 CFLAGS += -g
 
 OBJS_COMMON += test-modules/memory.o
