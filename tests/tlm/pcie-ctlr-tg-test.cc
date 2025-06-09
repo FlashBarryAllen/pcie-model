@@ -561,7 +561,6 @@ int get_memory_usage() {
 int sc_main(int argc, char* argv[])
 {
 	Top *top = new Top("top");
-	assert(0);
 
 	std::cout << "after init memory usage: " << get_memory_usage() << std::endl;
 

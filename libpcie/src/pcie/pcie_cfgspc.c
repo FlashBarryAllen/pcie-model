@@ -104,7 +104,7 @@
 #endif
 
 /* Debugging control */
-#define FS_PCI_DEBUGGING_ENABLED 0
+#define FS_PCI_DEBUGGING_ENABLED 1
 
 #if FS_PCI_DEBUGGING_ENABLED
 #define FS_PCI_DEBUG(args...) fs_log(args)

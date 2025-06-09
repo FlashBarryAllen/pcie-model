@@ -52,7 +52,7 @@
 #include "pcie_api.h"
 #include "pcie_internal.h"
 
-#define FI_VERBOSE 0
+#define FI_VERBOSE 1
 
 #define container_of(c_type, mbr_name, p_mbr)  \
   ( (c_type*) ((char*)(p_mbr) - offsetof(c_type, mbr_name)) )
