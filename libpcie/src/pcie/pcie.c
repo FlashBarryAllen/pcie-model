@@ -167,7 +167,8 @@ void pcie_tlp_init(pcie_state_t *state)
   assert(state->tlp->log != NULL);
   /* This is off by default as it does have a measurable performance impact
    * and is only useful if the model itself is crashing. */
-  state->tlp->sync = (getenv("PCIE_LOG_SYNC") != NULL);
+  //state->tlp->sync = (getenv("PCIE_LOG_SYNC") != NULL);
+  state->tlp->sync = true;
   cosim_dump_buffer_hdr(state->tlp->log);
 #endif
   cosim_dpi_init(state, state->instance,  &state->cosim_state, prod_pcie, state);
@@ -405,6 +406,8 @@ static void cosim_pcie_send_buffer(pcie_state_t *state,
 
 #if WITH_COSIM_TLP_LOG
     cosim_dump_buffer(state->tlp->log, dpi_gettime(state), buffer);
+    if (state->tlp->sync)
+      fflush(state->tlp->log);
 #endif
 
     cosim_buffer_send(client, buffer);
