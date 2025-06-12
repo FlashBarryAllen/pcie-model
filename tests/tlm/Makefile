@@ -48,8 +48,8 @@ ALL_OBJS += $(PCIE_CTRL_RAND_TG_TEST_OBJS)
 TARGETS += pcie-ctlr-tg-test
 TARGETS += pcie-ctlr-bar64-rand-tg-test
 TARGETS += pcie-ctlr-rand-tg-test
-TARGETS += simple_server
-TARGETS += simple_client
+TARGETS += unix_socket_server
+TARGETS += unix_socket_client
 
 ################################################################################
 
@@ -100,6 +100,12 @@ simple_server: simple_server.c
 	$(CC) $(CFLAGS) -pthread -o $@ $<
 
 simple_client: simple_client.c
+	$(CC) $(CFLAGS) -o $@ $<
+
+unix_socket_server: unix_socket_server.c
+	$(CC) $(CFLAGS) -pthread -o $@ $<
+
+unix_socket_client: unix_socket_client.c
 	$(CC) $(CFLAGS) -o $@ $<
 
 clean:
