@@ -48,6 +48,8 @@ ALL_OBJS += $(PCIE_CTRL_RAND_TG_TEST_OBJS)
 TARGETS += pcie-ctlr-tg-test
 TARGETS += pcie-ctlr-bar64-rand-tg-test
 TARGETS += pcie-ctlr-rand-tg-test
+TARGETS += simple_server
+TARGETS += simple_client
 
 ################################################################################
 
@@ -93,6 +95,12 @@ pcie-ctlr-bar64-rand-tg-test: CXXFLAGS += -DCONFIG_64BIT_BAR
 pcie-ctlr-bar64-rand-tg-test: LDLIBS += libpcie.a ../tinyxml2/libtinyxml2.a
 pcie-ctlr-bar64-rand-tg-test: pcie-ctrl-bar64-rand-tg-test.o libpcie.a ../tinyxml2/libtinyxml2.a $(OBJS_COMMON)
 	$(CXX) $(LDFLAGS) -o $@ $^  $(LDLIBS)
+
+simple_server: simple_server.c
+	$(CC) $(CFLAGS) -pthread -o $@ $<
+
+simple_client: simple_client.c
+	$(CC) $(CFLAGS) -o $@ $<
 
 clean:
 	$(RM) $(ALL_OBJS) $(ALL_OBJS:.o=.d)

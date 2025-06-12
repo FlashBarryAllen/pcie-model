@@ -502,6 +502,7 @@ static void cosim_socket_init(cosim_socket *socket, cosim_hub *hub,
   int type;
 
   assert(socket != NULL);
+  cosim_hub_set_tracing(hub, 1);
 
   socket->fd = fd;
   socket->hub = hub;
