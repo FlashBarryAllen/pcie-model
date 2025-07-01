@@ -1063,7 +1063,9 @@ static void create_lies_for_core_resource(pcie_state_t *state,
   cfgspc_state->bus_state[rid].lies = lies;
 
   cfgspc_state->msix_cap[rid] =  pcie_find_cap(PCI_CAP_ID_MSIX, resource->config_space);
-  update_msix_settings(state, resource);
+  if (cfgspc_state->msix_cap[rid] != 0) {
+    update_msix_settings(state, resource);
+  }
 }
 
 /* Destroy the external lies for the VF at a given position on the bus.
